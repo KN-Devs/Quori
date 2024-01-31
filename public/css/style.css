@@ -7,6 +7,7 @@
     --warning: #ea2027;
     --success: #009432;
     --font-family: 'Open Sans', sans-serif;
+    --font-size-small: 15px;
     --box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
     --border-radius: 3px;
     --border: 1px solid #ddd;
@@ -15,6 +16,8 @@
     --gray: #636466;
     --gray-dark: #444;
     --gray-light: #ddd;
+    --footer-bg: #0a3d62;
+     
 }
 
 /* reset */
@@ -101,6 +104,14 @@ h1,h2,h3,h4,h5 {
     padding: 20px;
 }
 
+.py-20 {
+    padding: 20px 0;
+}
+
+.py-50 {
+    padding: 20px 0;
+}
+
 ul {
     list-style: none;
 } 
@@ -174,4 +185,26 @@ header {
 
  .sidebar {
     max-width: 200px;
+ }
+
+.sidebar-nav li {
+    padding: 10px;
+    cursor: pointer;
+    transition: opacity .4s;
+    font-size: var(--font-size-small);
+}
+
+.sidebar-nav li:hover {
+    opacity: .8;
+}
+
+.sidebar-nav li i {
+  color: var(--color-dark);
+}
+
+ /* FOOTER */
+
+ footer {
+    background-color: var(--footer-bg);
+    color: white;
  }
