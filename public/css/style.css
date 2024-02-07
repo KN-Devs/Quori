@@ -8,6 +8,10 @@
     --success: #009432;
     --font-family: 'Open Sans', sans-serif;
     --font-size-small: 15px;
+    --font-size-regular: 16px;
+    --font-weight-regular: 400;
+    --font-weight-semi-bold: 600;
+    --font-weight-bold: 700;
     --box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
     --border-radius: 3px;
     --border: 1px solid #ddd;
@@ -101,6 +105,14 @@ ul {
     margin: 20px;
 }
 
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.mr-50 {
+    margin-right: 50px;
+}
+
 /* Paddings */
 .p-5 {
     padding: 5px;
@@ -153,14 +165,54 @@ ul {
     background-color: white;
 }
 
+.block {
+    padding: 15px;
+    border-radius: var(--border-radius);
+    background-color: white;
+    box-shadow: var(--box-shadow);
+}
+
 
 /* GENERAL */
 
- .content {
+.content {
     max-width: 1200px;
- }
+}
 
+.app-content {
+    background-color: var(--gray-light);
+}
 
+.form-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.form-row label {
+    margin-bottom: 5px;
+    font-weight: var(--font-weight-semi-bold);
+    color: var(--color-dark); 
+}
+
+.form-row input, .form-row textarea {
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 10px 15px;
+    background-color: var(--gray-light);
+    font-family: var(--font-family);
+    font-size: var(--font-size-regular);
+}
+
+.form-row textarea {
+    min-height: 150px;
+}
+
+.form-errors {
+    color: var(--warning);
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-semi-bold);
+}
 /* HEADER */
 
 header {
