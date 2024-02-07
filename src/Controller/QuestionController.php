@@ -11,15 +11,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class QuestionController extends AbstractController
 {
     #[Route('/question/ask', name: 'ask_question')]
-    public function index(Request $request): Response
+    public function ask(Request $request): Response
     {
         $FormQuestion = $this->createForm(QuestionType::class);
         $FormQuestion->handleRequest($request);
 
         if ($FormQuestion->isSubmitted() && $FormQuestion->isValid()) {
-            dump($FormQuestion->getData());
         }
 
-            return $this->render('question/index.html.twig', ['form' => $FormQuestion->createView()]);
+        return $this->render('question/index.html.twig', ['form' => $FormQuestion->createView()]);
     }
-}
+} 
