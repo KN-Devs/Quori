@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Question;
 use App\Form\QuestionType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,12 +13,23 @@ use Symfony\Component\Routing\Annotation\Route;
 class QuestionController extends AbstractController
 {
     #[Route('/question/ask', name: 'ask_question')]
-    public function ask(Request $request): Response
+    public function ask(Request $request, EntityManagerInterface $em): Response
     {
-        $FormQuestion = $this->createForm(QuestionType::class);
+
+        $question = new Question();
+
+        $FormQuestion = $this->createForm(QuestionType::class, $question);
         $FormQuestion->handleRequest($request);
 
         if ($FormQuestion->isSubmitted() && $FormQuestion->isValid()) {
+            $question->setNbResponse(0);
+            $question->setRating(0);
+            $question->setCreatedAt(new \DateTimeImmutable());
+
+            $em->persist($question);
+            $em->flush();
+            $this->addFlash('sucess', 'Vottre question a bien été ajoutée');
+            return $this->redirectToRoute('home');
         }
 
         return $this->render('question/index.html.twig', ['form' => $FormQuestion->createView()]);

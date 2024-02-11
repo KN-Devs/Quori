@@ -191,14 +191,27 @@ small {
 	border-radius: 50%;
 }
 
-.avatar-big {
-
-}
 
 .clickable {
 	color: var(--primary);
 	font-weight: var(--font-weight-semi-bold);
 	cursor: pointer;
+}
+
+/* MESSAGE FLASH*/
+
+.flash { 
+	padding: 20px;
+	text-align: center;
+	color: white;
+}
+
+.flash-sucess {
+	background-color: var(--success);
+}
+
+.flash-error {
+	background-color: var(--warning);
 }
 
 .rating-up {
