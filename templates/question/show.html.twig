@@ -1,16 +1,24 @@
 {% extends "base.html.twig" %}
 
 {% block title %}
-    {{ question.title }}
+	{{ question.title }}
 {% endblock title %}
 
+{% block stylesheets %}
+
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/question_show.css')}}">
+
+{% endblock stylesheets %}
+
 {% block body %}
-    <div class="block">
-        <div class="d-flex flex-row-nowrap align-items-center pb-30">
-            <h3>{{ question.title }}</h3>
-            <div class="question-tag">QUESTION</div>
-            <img src="https://randomuser.me/api/portraits/men/40.jpg" alt="Avatar" class="avatar">
-        </div>
-        <p>{{ question.content }}</p>
-    </div>
+	<div class="block">
+		<div class="d-flex flex-row-nowrap align-items-center pb-30">
+			<h3>{{ question.title }}</h3>
+			<div class="question-tag">QUESTION</div>
+			<img src="https://randomuser.me/api/portraits/men/40.jpg" alt="Avatar" class="avatar ml-auto">
+		</div>
+		<p class="question-text">{{ question.content }}</p>
+		<div class="separator"></div>
+	</div>
 {% endblock body %}
