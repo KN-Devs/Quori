@@ -116,6 +116,10 @@ small {
 	margin-bottom: 20px;
 }
 
+.mr-10 {
+	margin-right: 10px;
+}
+
 .mr-20 {
 	margin-right: 20px;
 }
@@ -141,6 +145,9 @@ small {
 	padding: 20px;
 }
 
+.pb-10 {
+	padding-bottom: 10px;
+}
 .pb-20 {
 	padding-bottom: 20px;
 }
@@ -279,6 +286,26 @@ small {
 	color: var(--warning);
 	font-size: var(--font-size-small);
 	font-weight: var(--font-weight-semi-bold);
+}
+
+/*Question*/
+
+.question-content {
+	border-bottom: 1px solid var(--gray);
+}
+
+/* Rating */
+.fa-thumbs-up, .fa-thumbs-down {
+	margin: 10px 0;	
+	cursor: pointer;
+}
+
+.fa-thumbs-up {
+	color: var(--success);
+}	
+
+.fa-thumbs-down {
+	color: var(--warning);
 }
 
 

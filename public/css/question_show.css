@@ -14,3 +14,9 @@
     line-height: 25px;
     white-space: pre-wrap;
 }
+
+
+.question-response-elem {
+    margin: 30px 0;
+    padding: 20px;
+}

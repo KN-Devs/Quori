@@ -17,7 +17,6 @@ class QuestionController extends AbstractController
     #[Route('/question/ask', name: 'ask_question')]
     public function ask(Request $request, EntityManagerInterface $em): Response
     {
-
         $question = new Question();
 
         $FormQuestion = $this->createForm(QuestionType::class, $question);
@@ -45,10 +44,14 @@ class QuestionController extends AbstractController
         $commentForm = $this->createForm(CommentType::class, $comment);
         $commentForm->handleRequest($request);
         
+        
         if($commentForm->isSubmitted() && $commentForm->isValid()) {
             $comment->setCreatedAt(new \DateTimeImmutable());
             $comment->setRating(0);
             $comment->setQuestion($question);
+
+            $question->setNbResponse($question->getNbResponse() + 1);
+
 
             $em->persist($comment);
             $em->flush();
@@ -57,7 +60,18 @@ class QuestionController extends AbstractController
             return $this->redirect($request->getUri());
         }
         
-      return $this->render('question/show.html.twig', ['question' => $question, 'form' => $commentForm->createView()]);
+        return $this->render('question/show.html.twig', ['question' => $question, 'form' => $commentForm->createView()]);
     }
+
+    #[Route('/question/rating/{id}/{score}', name: 'question_rating')]
+    public function rateQuestion(Request $request,Question $question, int $score, EntityManagerInterface $em)
+    {
+        $question->setRating($question->getRating() + $score);
+        $em->flush();
+        $referer = $request->server->get('HTTP_REFERER');
+        return $referer ? $this->redirect($referer) : $this->redirectToRoute('home');
+    }
+
+
 } 
 
