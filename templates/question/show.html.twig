@@ -37,7 +37,7 @@
 						<img src="https://randomuser.me/api/portraits/men/40.jpg" alt="" class="avatar-small mr-10">
 						<p class="clickable">michel davidson</p>
 						<span class="ml-auto">
-							{{ comment.createdAt | format_datetime(pattern ='d MMMM y ', locale= 'fr') }}
+							{{ comment.createdAt | ago(locale= 'fr') }}
 						</span>
 					</div>
 					<p class="question-reponse-text">{{ comment.content }}</p>
