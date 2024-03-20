@@ -225,7 +225,7 @@ small {
 	color: white;
 }
 
-.flash-succes {
+.flash-success {
 	background-color: var(--success);
 }
 

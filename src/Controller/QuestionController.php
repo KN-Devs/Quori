@@ -33,7 +33,7 @@ class QuestionController extends AbstractController
 
             $em->persist($question);
             $em->flush();
-            $this->addFlash('sucess', 'Vottre question a bien été ajoutée');
+            $this->addFlash('success', 'Votre question a bien été ajoutée');
             return $this->redirectToRoute('home');
         }
 
@@ -68,7 +68,7 @@ class QuestionController extends AbstractController
                 $em->persist($comment);
                 $em->flush();
 
-                $this->addFlash('succes', 'Votre repponse a bien était publié');
+                $this->addFlash('success', 'Votre commentaire a bien été ajouté');
                 return $this->redirect($request->getUri());
             }
             $options['form'] = $commentForm->createView();
