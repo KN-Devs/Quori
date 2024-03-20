@@ -13,15 +13,19 @@
 	<div class="block">
 		<div class="d-flex flex-row-nowrap align-items-center pb-30">
 			{% include "partials/_rating.html.twig" with {rating: question.rating, from: 'question', id: question.id} %}
-			<h3>{{ question.title }}</h3>
+			<div class=" d-flex flex-fill flex-row-nowrap">
+					<h3>{{ question.title }}</h3>
 			<div class="question-tag">QUESTION</div>
-			<img src="{{ question.author.image }}" alt="Avatar" class="avatar ml-auto">
+			</div>
+			<a href="{{ path('user_profile', {id: question.author.id}) }}">
+				<img src="{{ question.author.image }}" alt="Avatar" class="avatar ml-auto">
+			</a>
 		</div>
 		<p class="question-text">{{ question.content }}</p>
 		
 		{% if form is defined %}
 			<div class="separator"></div>
-					<div class="pb-20">
+			<div class="pb-20">
 				<h4>Nombre de réponses: {{ question.nbResponse }} </h4>
 			</div>
 			<h3 class="pb-20">Votre réponse:</h3>
@@ -38,8 +42,10 @@
 				{% include "./partials/_rating.html.twig" with {rating: comment.rating, from: 'comment', id: comment.id} %}
 				<div class="d-flex flex-column">
 					<div class="d-flex flex-row-nowrap align-items-center pb-10">
-						<img src="{{ comment.author.image }}" alt="" class="avatar-small mr-10">
-						<p class="clickable">{{ comment.author.fullname }}</p>
+						<a href="{{ path('user_profile', {id: comment.author.id}) }}" class="d-flex flex-row-nowrap align-items-center">
+							<img src="{{ comment.author.image }}" alt="" class="avatar-small mr-10">
+							<p class="clickable">{{ comment.author.fullname }}</p>
+						</a>
 						<span class="ml-auto">
 							{{ comment.createdAt | ago(locale= 'fr') }}
 						</span>
