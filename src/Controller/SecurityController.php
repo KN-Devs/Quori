@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
@@ -23,6 +24,7 @@ class SecurityController extends AbstractController
         if ($signupForm->isSubmitted() && $signupForm->isValid()) {
             $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($hashedPassword);
+
             $em->persist($user);
             $em->flush();
 
@@ -30,14 +32,25 @@ class SecurityController extends AbstractController
         }
 
         return $this->render('security/signup.html.twig', [
-            'signupForm' => $signupForm->createView()
+            'signupForm' => $signupForm->createView(), [ 'form' => $signupForm->createView()]
         ]);
     }
 
     #[Route('/signin', name: 'signin')]
-    public function signin(): Response
+    public function signin(AuthenticationUtils $authenticationUtils): Response
     {
-        return $this->render('security/signin.html.twig');
+        if ($this->getUser()) {
+            return $this->redirectToRoute('home');
+        }
+        
+        $error = $authenticationUtils->getLastAuthenticationError();
+        $username = $authenticationUtils->getLastUsername();
+        
+        return $this->render('security/signin.html.twig', [
+            'error' => $error,
+            'username' => $username
+        ]);
+        dd($error, $username);
     }
 
     #[Route('/logout', name: 'logout')]

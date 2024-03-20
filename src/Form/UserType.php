@@ -16,16 +16,16 @@ class UserType extends AbstractType
     {
         $builder
             ->add('firstname', TextType::class, [
-                'label' => 'Prénom *'
+                'label' => 'Prénom *', 'required' => false
             ])
             ->add('lastname', TextType::class, [
-                'label' => 'Nom *'
+                'label' => 'Nom *', 'required' => false
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Email *'
+                'label' => 'Email *', 'required' => false
             ])
             ->add('password', PasswordType::class, [
-                'label' => 'Mot de passe *'
+                'label' => 'Mot de passe *', 'required' => false
             ])
             ->add('image', TextType::class, [
                 'label' => 'Photo de profil', 'required' => false

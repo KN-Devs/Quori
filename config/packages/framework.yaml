@@ -2,12 +2,23 @@
 framework:
     secret: '%env(APP_SECRET)%'
     #csrf_protection: true
+    http_method_override: false
+    handle_all_throwables: true
 
     # Note that the session will be started ONLY if you read or write from it.
-    session: true
+    session: 
+        handler_id: session.handler.native_file
+        cookie_lifetime: 604800
+        cookie_secure: true
+        gc_maxlifetime: 604800
+        sid_bits_per_character: 5
+        cookie_samesite: lax
+        storage_factory_id: session.storage.factory.native
 
     #esi: true
     #fragments: true
+    php_errors:
+        log: true
 
 when@test:
     framework:

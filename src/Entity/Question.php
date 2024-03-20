@@ -40,6 +40,11 @@ class Question
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'question')]
     private Collection $comments;
 
+    #[ORM\ManyToOne(inversedBy: 'questions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $author = null;
+
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -139,4 +144,17 @@ class Question
 
         return $this;
     }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): static
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
 }
