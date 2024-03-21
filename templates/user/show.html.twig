@@ -2,12 +2,52 @@
 
 {% block title %}User profile{% endblock %}
 
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/question_show.css')}}">
+{% endblock stylesheets %}
+
 {% block body %}
-    <div class="block">
-        <h2 class="pb-30">Page de {{ app.user.fullname  }}</h2>
-        {{ form_start(form) }}
-            {{ form_rest(form) }}
-            <button class="btn btn-primary">Sauvegarder</button>
-        {{ form_end(form) }}
+    <div class="block mb-20">
+        <h2 class="pb-30">Profile de {{ user.fullname }}</h2>
+        <div class="d-flex flex-row-nowrap align-items-center">
+            <img src="{{ user.image }}" alt="User" class="mr-10 avatar-small">
+            <ul>
+                <li class="mb-10">
+                    <strong class="mr-10">{{ user.email }}</strong>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="block mb-20">
+        <h3 class="pb-30">Ces questions</h3>
+        <ul>
+            {% for question in user.questions %}
+                <li>
+                    <a href="{{ path('show_question', {id: question.id}) }}">
+                        <li class="pb-30">{{ question.title }}</li>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="block mb-20">
+        <h3 class="pb-30">Ces réponses</h3>
+        <ul>
+            {% for comment in user.comments %}
+                <li>
+                    <a href="{{ path('show_question', {'id': comment.question.id}) }}">
+                    <div class ="d-flex flex-row-nowrap align-items-center pb-20" >
+                        <p>{{ comment.question.title }} </p>
+                        <div class="question-tag">QUESTION</div>
+                    </div>
+                        <li class="pb-30">{{ comment.content | slice(0, 100) }} {% if comment.content | length >= 101 %}...{% endif %}
+                        </li>
+                    </a>
+                </li>
+                <div class="separator"></div>
+            {% endfor %}
+        </ul>
     </div>
 {% endblock %}
