@@ -9,15 +9,18 @@
             <i class="fa-solid fa-home mr-5"></i>
             Liste des questions
         </a>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 
-        <a>
-            <i class="fa-solid fa-pen mr-5"></i>
-            Mes questions
-        </a>
+            <a href="{{ path('show_questions') }}" class="{{ app.request.pathinfo == path('show_questions') ? 'active'  : ''}}">
+                <i class="fa-solid fa-pen mr-5"></i>
+                Mes questions
+            </a>
 
-        <a>
-            <i class="fa-solid fa-puzzle-piece mr-5"></i>
-            Mes réponses
-        </a>
+            <a href="{{ path('show_comments') }}" class="{{ app.request.pathinfo == path('show_comments') ? 'active'  : ''}}">
+                <i class="fa-solid fa-puzzle-piece mr-5"></i>
+                Mes réponses
+            </a>
+        {% endif %}
+        
     </ul>
 </div>
