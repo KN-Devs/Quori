@@ -21,6 +21,49 @@ class QuestionRepository extends ServiceEntityRepository
         parent::__construct($registry, Question::class);
     }
 
+    public function save(Question $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(Question $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function findAllQuestionWithAuthor() {
+        return $this->createQueryBuilder('q')
+            ->join('q.author', 'a')
+            ->addSelect('a')
+            ->orderBy('q.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findQuestionWithAllCommentsAndAuthors(int $id) {
+        return $this->createQueryBuilder('q')
+            ->join('q.author', 'a')
+            ->leftJoin('q.comments', 'c')
+            ->addSelect('c')
+            ->addSelect('a')
+            ->join('c.author', 'ca')
+            ->orderBy('c.createdAt', 'DESC')
+            ->where('q.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+    
+
+
 //    /**
 //     * @return Question[] Returns an array of Question objects
 //     */
