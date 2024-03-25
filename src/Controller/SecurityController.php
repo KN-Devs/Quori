@@ -50,6 +50,16 @@ class SecurityController extends AbstractController
             $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($hashedPassword);
 
+            $picture = $signupForm->get('pictureFile')->getData();
+            if($picture){
+                $folder = $this->getParameter('profile.folder');
+                $ext = $picture->guessExtension() ?? 'bin';
+                $fileName =bin2hex(random_bytes(10)).'.'.$ext;
+                $picture->move($folder, $fileName);
+                $user->setImage($this->getParameter('profile.folder.public_path'). "/" .$fileName);;
+            }else{
+                $user->setImage("/images/default_profile.png");
+            }
             // Persistance de l'utilisateur en base de données
             $em->persist($user);
             $em->flush();
@@ -145,7 +155,7 @@ class SecurityController extends AbstractController
                 // Création d'une nouvelle instance de ResetPassword
                 $resetPassword = new ResetPassword();
                 $resetPassword->setUser($user)
-                    ->setToken($token)
+                    ->setToken(sha1($token))
                     ->setExpiredAt(new DateTimeImmutable('+2 hours'));  
                 
                 // Persistance de la demande de réinitialisation en base de données
@@ -193,7 +203,7 @@ class SecurityController extends AbstractController
         
 
         // Recherche de la demande de réinitialisation associée au jeton fourni
-        $resetPassword = $resetPasswordRepository->findOneBy(['token' => $token]);
+        $resetPassword = $resetPasswordRepository->findOneBy(['token' => sha1($token)]);
 
         // Vérification si la demande de réinitialisation existe et si elle est encore valide
         if(!$resetPassword || $resetPassword->getExpiredAt() < new DateTime('now')){
