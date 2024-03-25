@@ -1,0 +1,7 @@
+framework:
+    rate_limiter:
+      password_recovery:
+        policy: fixed_window
+        limit: 4      # The maximum number of requests allowed
+        interval: '2 hours'
+        # The rate limiter service to use

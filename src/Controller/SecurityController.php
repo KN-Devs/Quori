@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
@@ -101,7 +102,11 @@ class SecurityController extends AbstractController
 
     // Route pour la demande de réinitialisation de mot de passe
     #[Route('/reset-password-request', name: 'reset-password-request')]
-    public function resetPasswordRequest(Request $request, UserRepository $userRepository, EntityManagerInterface $em, ResetPasswordRepository $resetPasswordRepository, MailerInterface $mailer) {
+    public function resetPasswordRequest(Request $request, UserRepository $userRepository, EntityManagerInterface $em, ResetPasswordRepository $resetPasswordRepository, MailerInterface $mailer, RateLimiterFactory $passwordRecoveryLimiter) {
+
+        $limiter = $passwordRecoveryLimiter->create($request->getClientIp());
+
+
 
         // Création du formulaire de demande de réinitialisation de mot de passe
         $emailForm = $this->createFormBuilder()
@@ -113,6 +118,12 @@ class SecurityController extends AbstractController
 
         // Vérification si le formulaire est soumis et valide
         if ($emailForm->isSubmitted() && $emailForm->isValid()) {
+
+            if (!$limiter->consume(1)->isAccepted()) {
+                $this->addFlash('error', 'Vous avez atteint la limite de demandes de réinitialisation, veuillez réessayer dans une heure.');
+                return $this->redirectToRoute('signin');
+            }
+
             // Récupération de l'e-mail fourni dans le formulaire
             $email = $emailForm->get('email')->getData();
             // Recherche de l'utilisateur associé à l'e-mail
@@ -170,7 +181,16 @@ class SecurityController extends AbstractController
 
     // Route pour la réinitialisation de mot de passe via un lien
     #[Route('/reset-password/{token}', name: 'reset-password')]
-    public function resetPassword(string $token, ResetPasswordRepository $resetPasswordRepository, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em) {
+    public function resetPassword(string $token, ResetPasswordRepository $resetPasswordRepository, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em, RateLimiterFactory $passwordRecoveryLimiter) {
+
+        $limiter = $passwordRecoveryLimiter->create($request->getClientIp());
+
+
+        if (!$limiter->consume(1)->isAccepted()) {
+            $this->addFlash('error', 'Vous avez atteint la limite de demandes de réinitialisation, veuillez réessayer dans une heure.');
+            return $this->redirectToRoute('signin');
+        }
+        
 
         // Recherche de la demande de réinitialisation associée au jeton fourni
         $resetPassword = $resetPasswordRepository->findOneBy(['token' => $token]);
