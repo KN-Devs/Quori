@@ -1,0 +1,25 @@
+/* SIDEBAR */
+
+.sidebar {
+	max-width: 200px;
+
+    a {
+        display: block;
+        padding: 10px;
+        cursor: pointer;
+        transition: opacity 0.4s;
+        
+        &:hover {
+            opacity: 0.8;
+        }
+
+        i {
+            color: var(--color-dark);
+        }
+    }
+}
+
+.active {
+	font-weight: bold;
+	color: var(--primary);
+}

@@ -1,0 +1,30 @@
+/* BTNs */
+
+.btn {
+	border-radius: var(--border-radius);
+	padding: 10px 15px;
+	border: 0;
+	box-shadow: var(--box-shadow);
+	transition: opacity 0.4s;
+
+    &:hover {
+        cursor: pointer;
+        opacity: 0.8;
+    }
+
+    &-small {
+        padding: 5px 15px;
+    }
+
+    &-primary {
+        background-color: var(--primary);
+        color: white;
+        font-weight: 600;
+
+        &-reverse {
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            background-color: white;
+        }
+    }
+}

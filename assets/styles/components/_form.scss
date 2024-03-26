@@ -1,0 +1,34 @@
+/* FORMULAIRES */
+
+.form { 
+    &-row {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+    
+        label {
+            margin-bottom: 5px;
+            font-weight: var(--font-weight-semi-bold);
+            color: var(--color-dark);
+        }
+    
+        input,textarea {
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 10px 15px;
+            background-color: var(--gray-light);
+            font-family: var(--font-family);
+            font-size: var(--font-size-regular);
+        }
+    
+        textarea {
+            min-height: 150px;
+        }    
+    }
+
+    &-errors {
+        color: var(--warning);
+        font-size: var(--font-size-small);
+        font-weight: var(--font-weight-semi-bold);
+    }
+}

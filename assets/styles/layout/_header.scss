@@ -1,0 +1,25 @@
+/* HEADER */
+
+.header {
+	box-shadow: var(--box-shadow);
+
+    &-search {
+        border-radius: var(--border-radius);
+        background-color: var(--gray-light);
+        max-width: 400px;
+    
+        input {
+            border: none;
+            outline: none;
+            background-color: var(--gray-light);
+        }
+    }
+
+    &-logo {
+        max-width: 150px;
+    
+        img {
+            max-width: 150px;
+        }
+    }
+}
