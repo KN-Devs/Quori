@@ -14,8 +14,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class CommentController extends AbstractController
 {
     #[Route('/comment/rating/{id}/{score}', name: 'comment_rating')]
-    #[IsGranted('rty
-    ')]
+    #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
     public function rateComment(Request $request,Comment $comment,int $score, EntityManagerInterface $em, VoteRepository $voteRepository)
     {
         $currentUser = $this->getUser();
