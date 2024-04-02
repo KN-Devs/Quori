@@ -43,6 +43,13 @@ class QuestionController extends AbstractController
         return $this->render('question/index.html.twig', ['form' => $FormQuestion->createView()]);
     }
 
+    #[Route('/question/search/{search}', name: 'question_search')]
+    public function questionSearch(string $search, QuestionRepository $questionRepository)
+    {
+        $questions = $questionRepository->findBySearch($search);
+        return $this->json(json_encode($questions));
+    }
+
     #[Route('/question/{id}', name: 'show_question')]
     public function show(int $id, Request $request, QuestionRepository $questionRepository, EntityManagerInterface $em)
     {      
@@ -60,7 +67,6 @@ class QuestionController extends AbstractController
                 $commentForm = $this->createForm(CommentType::class, $comment);
                 $commentForm->handleRequest($request);
                 
-                
                 if($commentForm->isSubmitted() && $commentForm->isValid()) {
                     $comment->setCreatedAt(new \DateTimeImmutable());
                     $comment->setRating(0);
@@ -68,7 +74,6 @@ class QuestionController extends AbstractController
                     $comment->setAuthor($user);
     
                     $question->setNbResponse($question->getNbResponse() + 1);
-    
     
                     $em->persist($comment);
                     $em->flush();
@@ -80,7 +85,6 @@ class QuestionController extends AbstractController
             }
             return $this->render('question/show.html.twig', $options);
         }
-        
         return $this->redirectToRoute('home');
     }
 
@@ -91,8 +95,6 @@ class QuestionController extends AbstractController
         $currentUser = $this->getUser();
 
         if($currentUser !== $question->getAuthor()) {
-
-            
 
             $vote = $voteRepository->findOneBy([
                 'author' => $currentUser,
@@ -106,8 +108,8 @@ class QuestionController extends AbstractController
                 } else {
                     $vote->setIsLiked(!$vote->getIsLiked());
                     $question->setRating($question->getRating() + ( $score > 0 ? 2 : -2 ));
-
                 } 
+
             } else {
                 $newVote = new Vote();
                 $newVote->setAuthor($currentUser)
@@ -115,7 +117,6 @@ class QuestionController extends AbstractController
                         ->setIsLiked($score > 0 ? true : false);
                 $em->persist($newVote);
                 $question->setRating($question->getRating() + $score);
-            
             }   
 
             $em->flush();
@@ -124,6 +125,5 @@ class QuestionController extends AbstractController
 
         $referer = $request->server->get('HTTP_REFERER');
         return $referer ? $this->redirect($referer) : $this->redirectToRoute('home');
-
     } 
 }

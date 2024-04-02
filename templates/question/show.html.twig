@@ -9,22 +9,18 @@
 	{{ encore_entry_link_tags('question') }}
 {% endblock stylesheets %}
 
-{% block javascripts %}
-	{{ parent() }}
-	{{ encore_entry_script_tags('question') }}
-{% endblock javascripts %}
 
 {% block body %}
 	<div class="block">
 		<div class="d-flex flex-row-nowrap align-items-center pb-30">
 			{% include "partials/_rating.html.twig" with {rating: question.rating, from: 'question', id: question.id} %}
-			<div class=" d-flex flex-fill flex-row-nowrap">
+			<div class="question-author d-flex flex-fill flex-row-nowrap align-items-center flex-column-xs">
 					<h3>{{ question.title }}</h3>
-			<div class="question-tag">QUESTION</div>
-			</div>
+			<div class="question-tag mr-10">QUESTION</div>
 			<a href="{{ path('user_profile', {id: question.author.id}) }}">
 				<img src="{{ question.author.image }}" alt="Avatar" class="avatar ml-auto">
 			</a>
+			</div>
 		</div>
 		<p class="question-text">{{ question.content }}</p>
 		

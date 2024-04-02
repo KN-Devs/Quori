@@ -3,24 +3,58 @@
         <a class="header-logo" href="{{path('home')}}">
             <img src="{{asset('build/images/logo.png')}}" alt="Logo">
         </a>
-        <div class="header-search p-10 flex-fill">
-            <i class="fa-solid fa-search"></i>
-            <input type="text" name="" id="">
-        </div>
+
+
+
+
+            
+            <div id="search" class="header-search p-10 flex-fill d-flex flex-row align-items-center">
+                <i class="fa-solid fa-search mr-10"></i>
+                <input @input="updateInput" ref="input" type="text" name="" id="" class="flex-fill">
+                <img v-if="isLoading" src="{{ asset('build/images/loader.gif') }}" alt="Loader" class="header-search-loading">
+                <ul class="header-search-result d-flex flex-column" v-if="questions">
+                    <a v-for="question in questions" :key="question.id" v-bind:href="'/question/' + question.id">
+                        ${ question.title }$
+                    </a>
+                </ul>
+            </div>
+
+
+
+
+
+
+
+
+
         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-            <div class="d-flex flex-row-nowrap align-items-center">
+            <div class="d-flex flex-row-nowrap align-items-center xs-hide">
                 <a href="{{ path('current_user_profile') }}">
                     <img src="{{ asset(app.user.image) }}" alt="Profile User" class="avatar mr-10">
                 </a>
                 <small>
-                    <a href="{{ path('logout') }}">Déconnexion</a>
+                    <a href="{{ path('logout') }}" class="btn btn-primary-reverse">Déconnexion</a>
                 </small>
             </div>
         {% else %}
-            <div>
+            <div class="xs-hide">
                 <a href="{{ path('signup')}}" class="btn btn-primary mr-5">Inscription</a>
                 <a href="{{ path('signin')}}" class="btn btn-primary-reverse">Connexion</a>
             </div>
         {% endif %}
+        <div class="show-xs burger">
+            <i class="fa-solid fa-bars"></i>
+        </div>
     </div>
 </header>
+
+
+<div class="menu-xs d-flex flex-column hidden align-items-center-xs">
+    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+        <a href="{{ path('current_user_profile') }}"></a>
+        <a href="{{ path('logout') }}" class="btn btn-primary-reverse ">Déconnexion</a>
+    {% else %}
+        <a href="{{ path('signup')}}" class="btn btn-primary">Inscription</a>
+        <a href="{{ path('signin')}}" class="btn btn-primary-reverse">Connexion</a>
+    {% endif %}
+</div>

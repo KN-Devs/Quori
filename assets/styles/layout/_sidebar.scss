@@ -3,6 +3,13 @@
 .sidebar {
 	max-width: 200px;
 
+    @include xs {
+        max-width: 100%;
+        width: 100%;
+        justify-content: center;
+        padding: 20px 0;
+    }
+
     a {
         display: block;
         padding: 10px;

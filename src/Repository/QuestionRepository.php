@@ -50,19 +50,25 @@ class QuestionRepository extends ServiceEntityRepository
 
     public function findQuestionWithAllCommentsAndAuthors(int $id) {
         return $this->createQueryBuilder('q')
-            ->join('q.author', 'a')
+            ->select('q', 'a', 'c', 'ca')
+            ->leftJoin('q.author', 'a')
             ->leftJoin('q.comments', 'c')
-            ->addSelect('c')
-            ->addSelect('a')
-            ->join('c.author', 'ca')
-            ->orderBy('c.createdAt', 'DESC')
+            ->leftJoin('c.author', 'ca')
+            ->addOrderBy('c.createdAt', 'DESC')
             ->where('q.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
             ->getOneOrNullResult();
     }
-    
 
+    public function findBySearch(string $search) {
+        return $this->createQueryBuilder('q')
+            ->select('q.title, q.id')
+            ->where('q.title LIKE :search')
+            ->setParameter('search', "%{$search}%")
+            ->getQuery()
+            ->getResult();
+    }
 
 //    /**
 //     * @return Question[] Returns an array of Question objects
